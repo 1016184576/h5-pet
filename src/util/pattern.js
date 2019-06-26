@@ -26,7 +26,7 @@ export const isID = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
 export const isSeverPwd = /^[0-9]{6}$/
 
 //6位短信验证码
-export const isSmsPwd = /^[0-9]{6}$/
+export const isSmsPwd = /^[0-9]{4}$/
 
 // 登录密码 至少包含数字和字母 长度为8-15个字符
 export const isLoginPwd = /^(?=.*[a-z]|[A-Z])(?=.*\d)[^]{8,15}$/;

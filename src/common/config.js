@@ -3,7 +3,7 @@ export const isDev = ()=>process.env.NODE_ENV !== "production";
 
 export const development = process.env.NODE_ENV === 'development';
 
-export const server_base_url = isDev() ? "http://203.156.235.194:8088/airbird-app-server-front/":'https://www.feiniaoshangcheng.com/airbird-app-server-front/'
+export const server_base_url = isDev() ? "https://www.easy-mock.com/mock/5cbeaf9ced7cba73aa79331f/example/":'https://www.feiniaoshangcheng.com/airbird-app-server-front/'
 
 export const resource = 'h5';
 

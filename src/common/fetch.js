@@ -22,22 +22,39 @@ export default function fetch(opts) {
     });
     if (opts.method.toUpperCase() === 'POST') {
       var storage = getLoginInfo();
+      /* console.log(opts)
       Object.assign(opts.data || {}, {  //除掉掉opts.data undefined
-        token: storage ? storage.token : ''
-      })
+        token: storage ? storage.token : '',
+        version: '1.0.1',
+        channel: 'wechat',
+        reqData:{
+          ...opts.data 
+        }
+      }) */
+      opts.data = {  //除掉掉opts.data undefined
+        token: storage ? storage.token : '',
+        version: '1.0.1',
+        channel: 'wechat',
+        reqData:{
+          ...opts.data 
+        }
+      }
     }
     
+
     instance(opts)
       .then(d => {
         loading.style.display = 'none';
-        if (d.data && d.data.errcode == 2) {
-          Toast("请先登录")
+        //token失效
+        if (d.data && d.data.code == "PT000110") {
           router.replace({
-            name: 'loginsms',
+            name: 'login',
             query: { redirect: router.currentRoute.fullPath }
           })
-        } else {
+        }else if(d.data && d.data.code == "00000000"){
           resolve(d.data);
+        } else {
+          reject(d.data);
         }
       })
       .catch(err => {
@@ -47,6 +64,7 @@ export default function fetch(opts) {
   })
 }
 
+//错误处理
 function handleError(err) {
   let {
     response: {

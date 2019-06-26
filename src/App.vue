@@ -17,7 +17,7 @@ export default {
   position: absolute;left:0;right: 0;
 }
 .slide-fade-enter-active {
-  transition: all 1.2s ease;
+  transition: all 0.8s ease;
 }
 .slide-fade-leave-active {
 
