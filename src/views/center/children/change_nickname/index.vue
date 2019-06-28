@@ -17,7 +17,7 @@ import { mapActions } from "vuex";
 export default {
   data(){
     return {
-      nickname: this.$route.params.nickname  
+      nickname: this.$route.query.nickname  
     }
   },
   methods:{
@@ -38,6 +38,7 @@ export default {
         modifyNickName({
           nickName: this.nickname
         }).then(res => {
+          sessionStore.remove('userinfo');
           this.loadUserInfo().then(data => {
             this.$router.push("/userInfo");
           }).catch(error=>{

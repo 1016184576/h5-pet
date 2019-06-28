@@ -23,7 +23,12 @@ export default {
   },
   methods: {
     handleClick(){
-      console.log(this.row)
+      this.$router.push({
+        path:'/article_detail',
+        query:{
+          id: this.row.id
+        }
+      })
     }
   }
 };

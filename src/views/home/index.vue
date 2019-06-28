@@ -64,7 +64,7 @@ export default {
       this.$store.dispatch("setTabActive", parseInt(tabActive));
        
     }*/
-    console.log(this.getTabActive)
+    this.tabActive = this.getTabActive;
   },
   computed:{
     ...mapGetters([

@@ -1,58 +1,46 @@
 <template>
-  <div class="collect" :style="styleObject">
+  <div class="collect">
     <pet-nav-bar
       class="header"
-      bgcolor="#FF7597"
-      fontColor="#ffffff"
-      title="收藏文章"
+      :title="title"
       @leftClick="back"
     />
+    <div class="block"></div>
     <scroll class="wrapper" :data="listData" :pullup="true">
-      <van-pull-refresh v-if="listData.length > 0"  v-model="isLoading" @refresh="onRefresh">
+      <van-pull-refresh  v-model="isLoading" @refresh="onRefresh">
         <ul>
           <ListChild :row="item" v-for="(item,index) in listData" :key="index"></ListChild>
         </ul>
       </van-pull-refresh>
-      <NotData v-else msg="您还没有收藏文章哦~" />
     </scroll>
   </div>
 </template>
 <script>
-import { getFollowAttention } from "@/api/appInfo";
-import { Toast, PullRefresh } from "vant";
-
 import Scroll from "@/components/Scroll";
 import ListChild from "@/components/list-child";
-import NotData from "@/components/not-data";
+import { getHomePageConsult } from "@/api/homepage";
+import { Toast, PullRefresh } from "vant";
 
 export default {
   data() {
     return {
       listData: [],
-      isLoading: false,
-      
+      type:'ZT',
+      title:'专题',
+      isLoading:false
     };
   },
   mounted() {
-    sessionStore.set('backSource',this.$route.fullPath);
-    this.loadData();
-  },
-  computed:{
-      styleObject(){
-        return { 
-          backgroundColor: this.listData.length > 0 ? "#FFFFFF":"#F6F6F6"
-        };
-      }
+    this.init();
   },
   components: {
     ListChild,
     Scroll,
-    NotData,
     "van-pull-refresh": PullRefresh
   },
   methods: {
     back() {
-      this.$router.push("/center");
+      this.$router.push("/petring");
     },
     onRefresh(){
       setTimeout(() => {
@@ -60,9 +48,16 @@ export default {
         this.isLoading = false;
       }, 500);
     },
+    init(){
+      sessionStore.set('backSource',this.$route.fullPath);
+      let { title, type }  = this.$route.query;
+      this.title = title;
+      this.type = type;
+      this.loadData();
+    },
     loadData() {
-      getFollowAttention({
-        type: "SCWZ"
+      getHomePageConsult({
+        type: this.type
       })
         .then(res => {
           this.listData = res.data;
@@ -80,12 +75,13 @@ export default {
   height: calc(100vh);
   background-color: @colorC;
   position: relative;
+  padding-top: 44px;
+  box-sizing: border-box;
   .wrapper {
     position: absolute;
-    top: 44px;
+    top: 54px;
     bottom: 0;
     overflow: hidden;
-    width: 100%;
   }
 }
 </style>

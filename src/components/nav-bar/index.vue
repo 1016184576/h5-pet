@@ -1,8 +1,9 @@
 <template>
   <div class="nav-bar" :style="{backgroundColor:bgcolor}">
-    <a class="back" @click="click">
+    <a class="back" @click="click" v-if="!isSlotsBool">
       <van-icon name="arrow-left" :color="fontColor" size="0.48rem" />
     </a>
+    <slot name="leftIcon" v-else></slot>
     <span :style="{color:fontColor}">{{title}}</span>
   </div>
 </template>
@@ -23,6 +24,11 @@ export default {
       default: '#333333'
     },
   },
+  computed:{
+    isSlotsBool(){
+      return this.$slots.leftIcon ? true : false;
+    }
+  },
   components:{
     "van-icon": Icon
   },
@@ -40,6 +46,7 @@ export default {
   width: 100%;
   align-items: center;
   position: fixed;
+  z-index: 2;
   top: 0;
   left: 0;
   text-align: center;

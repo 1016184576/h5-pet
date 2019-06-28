@@ -7,7 +7,7 @@
     <div class="info">
       <h2>{{data.merchantName}}</h2>
       <slot/>
-      <span>{{data.address.length > 12 ? data.address.substr(0,12) : data.address }}</span>
+      <span>{{ getAddress }}</span>
     </div>
   </div>
 </template>
@@ -17,6 +17,12 @@ export default {
     data:{
       type: Object,
       default: {}
+    }
+  },
+  computed:{
+    getAddress(){
+      let { data } = this;
+      return data.address ? (data.address.length > 12 ? data.address.substr(0,12) : data.address) : "";
     }
   }
 }

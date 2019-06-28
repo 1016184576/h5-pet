@@ -88,7 +88,7 @@ const routes = [
       requireAuth: true
     }
   },{
-    path: '/change_nickname/:nickname',
+    path: '/change_nickname',
     name: 'change_nickname',
     component: () => import('@/views/center/children/change_nickname'),
     meta: {
@@ -119,7 +119,32 @@ const routes = [
       title: `关注店铺`,
       requireAuth: true
     }
+  },{
+    path: '/article',
+    name: 'article',
+    component: () => import('@/views/petring/children/article'),
+    meta: {
+      title: `文章`,
+      requireAuth: true
+    }
+  },{
+    path: '/article_detail',
+    name: 'article_detail',
+    component: () => import('@/views/petring/children/article_detail'),
+    meta: {
+      title: `文章详情`,
+      requireAuth: true
+    }
+  },{
+    path: '/shop_details',
+    name: 'shop_details',
+    component: () => import('@/views/shop/children/shop_details'),
+    meta: {
+      title: `商家详情`,
+      requireAuth: true
+    }
   }
+
 ];
 
 

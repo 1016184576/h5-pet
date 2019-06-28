@@ -16,7 +16,6 @@ export default {
       var starArr = []; //3.9
       //全星星的个数
       let onstar = parseInt(this.score);
-      console.log(onstar);
       //是否有半星
       let halfStar = Math.round(this.score - onstar) ? true : false;
       //有多少课灰色的星星

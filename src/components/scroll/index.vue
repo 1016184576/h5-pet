@@ -104,6 +104,7 @@ export default {
         this.scroll.on("scrollEnd", () => {
           // 滚动到底部
           if (this.scroll.y <= this.scroll.maxScrollY + 50) {
+            //console.log(this.scroll.y)
             this.$emit("scrollToEnd");
           }
         });

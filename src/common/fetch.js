@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { server_base_url } from './config'
 
-import { getLoginInfo, clearStorge } from '@/util/storage'
+import { getLoginInfo, clearAll } from '@/util/storage'
 
 import { Toast } from 'vant'
 
@@ -16,7 +16,7 @@ export default function fetch(opts) {
       //设置默认根地址
       baseURL: server_base_url,
       // 设置请求超时设置
-      timeout: 12 * 1000,
+      timeout: 30 * 1000,
       //设置请求时的header
       // headers: setReqHeaders()
     });
@@ -47,6 +47,7 @@ export default function fetch(opts) {
         loading.style.display = 'none';
         //token失效
         if (d.data && d.data.code == "PT000110") {
+          clearAll();
           router.replace({
             name: 'login',
             query: { redirect: router.currentRoute.fullPath }

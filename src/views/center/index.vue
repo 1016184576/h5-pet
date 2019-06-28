@@ -3,7 +3,7 @@
     <div class="userinfo">
       <h2>我的</h2>
       <div class="info" @click="handleClick">
-        <img :src="userInfo.avatar ? userInfo.avatar : './imgs/avatar.png'" alt>
+        <img :src="avatarUrl"  alt>
         <span>{{userInfo.phone}}</span>
         <i class="iconfont icon-arrow"></i>
       </div>
@@ -63,6 +63,11 @@ export default {
       Toast(err.msg);
     })
     this.loadAppInfo();
+  },
+  computed:{
+    avatarUrl(){
+      return this.userInfo.avatar ? this.userInfo.avatar : require('./imgs/avatar.png');
+    }
   },
   methods: {
     ...mapActions([

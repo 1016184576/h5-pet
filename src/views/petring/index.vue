@@ -3,19 +3,9 @@
     <div class="banner">
       <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <a href="/petring">
-                <img src="//imgcps.jd.com/ling4/1404743/5b6u5rOi54KJ6auY5ZOB5ZGz/6LaF5YC854m55oOg/p-5c13869682acdd181deefebe/3aadf3a9/cr_1125x549_0_72/s1125x690/q70.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="/petring">
-                <img src="//m.360buyimg.com/mobilecms/s750x366_jfs/t1/25219/36/721/56416/5c0c1eacEecb7837b/cfcc9d33eae893e3.jpg!cr_1125x549_0_72!q70.jpg.dpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="/petring">
-                <img src="//m.360buyimg.com/mobilecms/s750x366_jfs/t1/71971/19/1304/149780/5cf7ad40E4bfc3362/28d3250f4cbccd5e.jpg!cr_1125x549_0_72!q70.jpg.dpg" alt="">
+            <div class="swiper-slide" v-for="(item,index) in bannerArr" :key="index">
+              <a :href="item.bannerJumpUrl">
+                <img :src="item.bannerUrl" alt="">
               </a>
             </div>
         </div>
@@ -25,117 +15,124 @@
     </div>
     <!--板块-->
     <div class="plate">
-      <div>
-        <img src="./imgs/special.png" alt="">
-        <span>专题</span>
-      </div>
-      <div>
-        <img src="./imgs/public_welfare.png" alt="">
-        <span>宠物公益</span>
-      </div>
-      <div>
-        <img src="./imgs/public_welfare.png" alt="">
-        <span>宠物健康</span>
+      <div @click="plateClick(item)" v-for="(item,index) in plateArr" :key="index">
+        <img :src="item.url" alt="">
+        <span>{{item.title}}</span>
       </div>
     </div>
-    <div class="list" ref="wrapper" style="padding-bottom:50px;">
-      <ul>
-        <ListChild :row="item" v-for="(item,index) in listData" :key="index"></ListChild>
-      </ul>
-    </div>
+    <div class="block"></div>
+    <scroll class="wrapper" :data="listData" :pullup="true" @scrollToEnd="scrollToEnd" style="bottom:50px;">
+      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+        <ul>
+          <ListChild :row="item" v-for="(item,index) in listData" :key="index"></ListChild>
+        </ul>
+      </van-pull-refresh>
+    </scroll>
   </div>
 </template>
 <script>
+import { getHomePageBanner, getHomePageSubject } from '@/api/homepage';
+import { Toast, PullRefresh } from 'vant';
 import Swiper from 'swiper';
-import BScroll from 'better-scroll';
+
 import ListChild from '@/components/list-child';
+import Scroll from "@/components/Scroll";
 
 export default {
   data(){
     return{
-      listData:[{
-        id: 1,
-        subName:'养宠物要做哪些养宠物要做哪些功课',
-        subType:'养护',
-        lookTimes: 110,
-        subBanner: require('./imgs/list1.png')
+      listData:[],
+      bannerArr:[],
+      isLoading:false,
+      plateArr:[{
+        title:"专题",
+        url: require('./imgs/special.png'),
+        type: "ZT"
       },{
-        id: 1,
-        subName:'养宠物要做哪些养宠物要做哪些功课',
-        subType:'养护',
-        lookTimes: 110,
-        subBanner: require('./imgs/list2.png')
+        title:"宠物公益",
+        url: require('./imgs/public_welfare.png'),
+        type: "CWGY"
       },{
-        id: 1,
-        subName:'养宠物要做哪些养宠物要做哪些功课',
-        subType:'养护',
-        lookTimes: 110,
-        subBanner: require('./imgs/list3.png')
-      },{
-        id: 1,
-        subName:'养宠物要做哪些养宠物要做哪些功课',
-        subType:'养护',
-        lookTimes: 110,
-        subBanner: require('./imgs/list1.png')
-      },{
-        id: 1,
-        subName:'养宠物要做哪些养宠物要做哪些功课',
-        subType:'养护',
-        lookTimes: 110,
-        subBanner: require('./imgs/list2.png')
-      },{
-        id: 1,
-        subName:'养宠物要做哪些养宠物要做哪些功课',
-        subType:'养护',
-        lookTimes: 110,
-        subBanner: require('./imgs/list3.png')
-      },{
-        id: 1,
-        subName:'养宠物要做哪些养宠物要做哪些功课',
-        subType:'养护',
-        lookTimes: 110,
-        subBanner: require('./imgs/list1.png')
+        title:"宠物健康",
+        url: require('./imgs/health.png'),
+        type: "CWJK"
       }]
     }
   },
   created(){
-    this.$store.dispatch("setTabActive", 0);
-    new Swiper('.swiper-container',{
-      autoplay: true,
-      loop: true, // 循环模式选项
-      // 如果需要分页器
-      pagination: {
-        el: '.swiper-pagination',
-      },
-    })
-    setTimeout(() => {
-      this.scroll = new BScroll(this.$refs.wrapper,{
-        probeType: 1,
-        click: true
-      })
-      this.scroll.on('pullingUp', () => {
-        // 下拉动作
-        /* if (pos.y > 50) {
-          
-        } */
-        console.log(1)
-      })
-    }, 20);
+    this.init();
   },
   components:{
-    ListChild
+    ListChild,
+    Scroll,
+    "van-pull-refresh": PullRefresh
   },
   methods:{
-
+    onRefresh(){
+      setTimeout(() => {
+        this.loadListData();
+        this.isLoading = false;
+      }, 500);
+    },
+    scrollToEnd(){
+      console.log(111111)
+    },
+    plateClick({ title, type }){
+      this.$router.push({
+        path:'/article',
+        query:{
+          title,
+          type
+        }
+      })
+    },
+    init(){
+      this.$store.dispatch("setTabActive", 0);
+      this.loadBannerData();
+      this.loadListData();
+      this.$nextTick(()=>{
+        new Swiper('.swiper-container',{
+          autoplay: true,
+          loop: true, // 循环模式选项
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination',
+          },
+        })
+      })
+    },
+    //加载banner数据
+    loadBannerData(){
+      getHomePageBanner().then(res=>{
+        this.bannerArr = res.data;
+      }).catch(err=>{
+        Toast(err.msg);
+      })
+    },
+    //加载首页列表数据
+    loadListData(){
+      getHomePageSubject().then(res=>{
+        this.listData = res.data;
+      }).catch(err=>{
+        Toast(err.msg);
+      })
+    }
   }
 }
 </script>
 <style lang="less" scoped>
 @import "../../less/default.less";
 .petring{
+  height: calc(100vh);
+  background-color: @colorC;
+}
+.petring{
   background-color: @colorJ;
   .banner{
     width: 100%;
+    .swiper-slide{
+      height: 125px;
+    }
     a{
       display: block;
       img{
@@ -150,6 +147,8 @@ export default {
     padding: 35px 35px 15px 35px;
     display: flex;
     justify-content: space-between;
+    height: 115px;
+    box-sizing: border-box;
     div{
       text-align: center;
       img{
@@ -167,9 +166,12 @@ export default {
       }
     }
   }
-  .list{
+  .wrapper{
+    position: absolute;
+    left: 0;
+    top: 250px;
     background-color: @colorC;
-    margin-top: 10px;
+    overflow: hidden;
   }
 }
 

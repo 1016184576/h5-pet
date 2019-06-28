@@ -23,7 +23,7 @@
       </div>
       <div class="filed-box">
         <img src="../../assets/imgs/code@2x.png" alt>
-        <input type="tel" v-model="password" @blur="inputBlur" placeholder="请输入密码">
+        <input type="password" v-model="password" @blur="inputBlur" placeholder="请输入密码">
       </div>
       <div class="login-type">
         <a @click="switchLoginType('sms')">短信登陆</a>
@@ -50,7 +50,8 @@ export default {
       verifyText: "获取验证码",
       number: NUM,
       disabled: false,
-      loginType: "sms"
+      loginType: "sms",
+      sendCodeBool: false
     };
   },
   created() {
@@ -82,6 +83,7 @@ export default {
             phone: this.phone
           })
             .then(res => {
+              this.sendCodeBool = true;
               this.sendCode();
             })
             .catch(err => {
@@ -110,7 +112,9 @@ export default {
       let params = {};
       //短信登陆
       if (this.loginType == "sms") {
-        if (this.phone == "") {
+        if(!this.sendCodeBool){
+          return Toast("请发送验证码");
+        }else if (this.phone == "") {
           return Toast("请输入手机号码");
         } else if (this.verifyCode == "") {
           return Toast("请输入验证码");

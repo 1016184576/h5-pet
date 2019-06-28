@@ -21,6 +21,8 @@
   zoom: 1; 
 }
 
+
+@width: 10px;
 .loading{
   position: absolute;
   width: 100px;
@@ -32,8 +34,8 @@
 }
 .loading span{
   display: inline-block;
-  width: 14px;
-  height: 14px;
+  width: @width;
+  height: @width;
   border-radius: 50%;
   background: @colorH;
   position: absolute;
@@ -50,45 +52,45 @@
 .loading span:nth-child(1){
   left: 0;
   top: 50%;
-  margin-top:-7px;
+  margin-top:-5px;
   -webkit-animation-delay:0.13s;
 }
 .loading span:nth-child(2){
-  left: 14px;
-  top: 14px;
+  left: @width;
+  top: @width;
   -webkit-animation-delay:0.26s;
 }
 .loading span:nth-child(3){
   left: 50%;
   top: 0;
-  margin-left: -7px;
+  margin-left: -5px;
   -webkit-animation-delay:0.39s;
 }
 .loading span:nth-child(4){
-  top: 14px;
-  right:14px;
+  top: @width;
+  right:@width;
   -webkit-animation-delay:0.52s;
 }
 .loading span:nth-child(5){
   right: 0;
   top: 50%;
-  margin-top:-7px;
+  margin-top:-5px;
   -webkit-animation-delay:0.65s;
 }
 .loading span:nth-child(6){
-  right: 14px;
-  bottom:14px;
+  right: @width;
+  bottom:@width;
   -webkit-animation-delay:0.78s;
 }
 .loading span:nth-child(7){
   bottom: 0;
   left: 50%;
-  margin-left: -7px;
+  margin-left: -5px;
   -webkit-animation-delay:0.91s;
 }
 .loading span:nth-child(8){
-  bottom: 14px;
-  left: 14px;
+  bottom: @width;
+  left: @width;
   -webkit-animation-delay:1.04s;
 }
 
@@ -107,3 +109,8 @@
 }
 
 .bt{border-bottom: 1px solid @colorJ;}
+
+.block{
+  height: 0.26667rem;
+  background-color: @colorJ;
+}
